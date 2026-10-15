@@ -1,0 +1,22 @@
+Windows Registry Editor Version 5.00
+
+; Stop the controller Xbox button from opening Game Bar
+[HKEY_CURRENT_USER\Software\Microsoft\GameBar]
+"UseNexusForGameBarEnabled"=dword:00000000
+
+; Handle ms-gamebar links silently (systray.exe exits immediately)
+[HKEY_CURRENT_USER\Software\Classes\ms-gamebar]
+@="URL:ms-gamebar"
+"URL Protocol"=""
+"NoOpenWith"=""
+
+[HKEY_CURRENT_USER\Software\Classes\ms-gamebar\shell\open\command]
+@="\"C:\\Windows\\System32\\systray.exe\""
+
+[HKEY_CURRENT_USER\Software\Classes\ms-gamebarservices]
+@="URL:ms-gamebarservices"
+"URL Protocol"=""
+"NoOpenWith"=""
+
+[HKEY_CURRENT_USER\Software\Classes\ms-gamebarservices\shell\open\command]
+@="\"C:\\Windows\\System32\\systray.exe\""
