@@ -4,11 +4,11 @@
 
 测试环境：**Windows 11 25H2**
 
-修复两种情况下的“你的设备需要一个新应用才能打开此链接”弹窗：
+修复弹窗问题：
 
 | 弹窗 | 出现时机 | 修复文件 |
 |---|---|---|
-| `ms-gamebar` | 卸载 Xbox Game Bar 后，按手柄上的 Xbox 键 | `fix-gamebar-popup.reg`（无需管理员） |
+| `ms-gamebar` | 卸载 Xbox Game Bar 后，每次连接手柄 | `fix-gamebar-popup.reg`（无需管理员） |
 | `https` / `http` | 强制卸载 Microsoft Edge 后点击链接（卸载时连带删除了系统的 http/https 协议定义） | `fix-https-popup.reg`（需要管理员） |
 
 ## 用文件修复
