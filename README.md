@@ -1,38 +1,32 @@
-# Windows 11 popup fixes
+# Xbox 弹窗修复
 
-English | [中文](README.zh-CN.md)
+中文 | [English](README.en.md)
 
-Tested on **Windows 11 25H2**.
+测试环境：**Windows 11 25H2**
 
-Fixes the *"You'll need a new app to open this link"* popup in two cases:
+卸载 Xbox Game Bar 后，每次按手柄上的 Xbox 键，都会弹出“你需要使用新应用打开此 ms-gamebar 链接”。导入本仓库的注册表文件即可让它不再出现。
 
-| Popup | When it appears | Fix |
-|---|---|---|
-| `ms-gamebar` | Pressing the Xbox button on a controller after Xbox Game Bar was removed | `fix-gamebar-popup.reg` (no admin) |
-| `https` / `http` | Clicking links after Microsoft Edge was force-removed (the removal also deletes the system http/https protocol keys) | `fix-https-popup.reg` (admin) |
+> 卸载 Microsoft Edge 后点击链接也弹出类似窗口？那是另一个问题，见 [edge-removal-link-fix](https://github.com/AINLZE/edge-removal-link-fix)。
 
-## Use the files
+## 用文件修复
 
-Download the `.reg` file, double-click it, and confirm.
-To undo the Game Bar fix, run `undo-gamebar-popup.reg`.
+1. 下载 `fix-gamebar-popup.reg`。
+2. 双击并确认导入，不需要管理员权限。
 
-## Or do it by hand
+想恢复原状，导入 `undo-gamebar-popup.reg` 即可。
 
-Open `regedit`.
+## 修复做了什么
 
-**ms-gamebar**
+- 关闭 `UseNexusForGameBarEnabled`，按 Xbox 键时不再尝试打开 Game Bar。
+- 把 `ms-gamebar` 和 `ms-gamebarservices` 链接交给 `systray.exe` 处理。它启动后会立即退出，所以不会出现任何窗口。
 
-1. `HKEY_CURRENT_USER\Software\Microsoft\GameBar` → DWORD `UseNexusForGameBarEnabled` = `0`
-2. Create `HKEY_CURRENT_USER\Software\Classes\ms-gamebar`, add an empty string value `URL Protocol`
-3. Under it create `shell\open\command`, set `(Default)` to `"C:\Windows\System32\systray.exe"`
-4. Repeat steps 2–3 for `ms-gamebarservices`
+## 不下载，手动修改
 
-**https / http**
+打开 `regedit`（注册表编辑器）：
 
-1. Create `HKEY_LOCAL_MACHINE\SOFTWARE\Classes\https`, add an empty string value `URL Protocol`
-2. Do the same for `http`
-3. If `HKEY_CURRENT_USER\Software\Classes\https` (or `http`) exists, add `URL Protocol` there too
+1. 在 `HKEY_CURRENT_USER\Software\Microsoft\GameBar` 下，把 DWORD 值 `UseNexusForGameBarEnabled` 设为 `0`。
+2. 新建 `HKEY_CURRENT_USER\Software\Classes\ms-gamebar`，添加一个空的字符串值 `URL Protocol`。
+3. 在其下新建 `shell\open\command`，把 `(默认)` 设为 `"C:\Windows\System32\systray.exe"`。
+4. 对 `ms-gamebarservices` 重复第 2、3 步。
 
-If links still don't open, pick your browser again in *Settings › Apps › Default apps*.
-
-> Edits the registry. Use at your own risk.
+> 本修复会修改注册表，请自行承担风险。
